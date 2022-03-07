@@ -1,5 +1,4 @@
 #include "../include/levelset.hpp"
-#include "image.hpp"
 
 vector<real> c1_and_c2(const matrice<real>& f, const matrice<real>& phi)
 {
