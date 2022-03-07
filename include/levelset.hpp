@@ -20,7 +20,9 @@ class levelset: public matrice<real>
         levelset(int n, int m);
         levelset(int n, int m, std::vector<real>);
         levelset(matrice<real>);
-
+        
+        levelset blanc_noir() const; //Met à 0 si négatif, 1 si positif
+        levelset& blanc_noir();
 };
 
 

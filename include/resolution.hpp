@@ -22,5 +22,6 @@ matrice<real> carre(int taille_matrice);
 
 //Initialisation de phi_0
 matrice<real> initialisation_cercle(int taille);
+matrice<real> initialisation_generale(int taille);
 
 #endif

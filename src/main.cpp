@@ -16,8 +16,8 @@ int main()
 	std::cout<<"Initialisation :"<<std::endl;
 	int taille=500;
 
-	levelset f( cercle(taille) );
-	levelset phi_0( initialisation_cercle(taille) );
+	levelset f( deux_cercles(taille) );
+	levelset phi_0( initialisation_generale(taille) );
 
 	std::cout<<"Recherche du minimum :"<<std::endl;
 	std::vector<real> c(c1_and_c2(f,phi_0));
@@ -26,21 +26,9 @@ int main()
 
 	levelset phi_f( resolution_globale(phi_0,f) );
 
-
-	for(int i=1; i<=taille; i++)
-	{
-		for(int j=1; j<=taille; j++)
-		{
-			phi_f(i,j)>=0 ? phi_f(i,j)=0 :  phi_f(i,j) = 1 ;
-		}
-	}
-	for(int i=1; i<=taille; i++)
-	{
-		for(int j=1; j<=taille; j++)
-		{
-			phi_0(i,j)>=0 ? phi_0(i,j)=0 :  phi_0(i,j) = 1 ;
-		}
-	}
+	
+	phi_f.blanc_noir();
+	phi_0.blanc_noir();
 
 	std::cout<<"Résultat final :"<<std::endl;
 

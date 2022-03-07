@@ -14,6 +14,22 @@ levelset::levelset(matrice<real> A)
 {}
 
 
+levelset levelset::blanc_noir() const //Met à 0 si négatif, 1 si positif
+{
+    levelset res(*this);
+    for(int i=0; i<m_valeurs.size(); i++)
+        m_valeurs[i]>0 ? res[i]=1 : res[i]=0;
+    return res;
+}
+
+levelset& levelset::blanc_noir()
+{
+    for(int i=0; i<m_valeurs.size(); i++)
+        m_valeurs[i]>0 ? m_valeurs[i]=1 : m_valeurs[i]=0;
+    return *this;
+}
+
+
 std::ostream& operator<<(std::ostream& stream, const levelset& imag)
 {
     // fill the metadata header 

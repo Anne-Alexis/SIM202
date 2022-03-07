@@ -83,6 +83,8 @@ matrice<real> resolution_globale(const matrice<real> &phi_0, const matrice<real>
         phi_n=phi_np1;
         c=c1_and_c2(f,phi_n);
         Euler_Explicite(phi_n, phi_np1, f, c[0] , c[1]);
+        if (cpt%100==0)
+            std::cout<<cpt<<std::endl;
     }
 
     std::cout<<"Erreur Linf :"<<(phi_n-phi_np1).normeinf()<<std::endl;
@@ -171,6 +173,19 @@ matrice<real> initialisation_cercle(int taille)
     }
     return f;
 }
+
+matrice<real> initialisation_generale(int taille)
+{
+    matrice<real> f(taille,taille);
+    for(int i=1; i<=taille; i++)
+    {
+        for(int j=1; j<=taille; j++)
+        {
+            f(i,j) = std::sin(0.1*PI*i)*std::sin(0.1*PI*j);
+        }
+    }
+    return f;
+} 
 
 
 
