@@ -77,7 +77,7 @@ matrice<real> resolution_globale(const matrice<real> &phi_0, const matrice<real>
     int cpt(0);
 
 
-    while( ( c[0] > 0.0001 || c[1]< 0.9999 ) && cpt < 10000 )
+    while( ( c[0] > 0.0001 || c[1]< 0.9999 ) && cpt < NB_ITERATIONS )
     {
         cpt++;
         phi_n=phi_np1;
@@ -165,52 +165,11 @@ matrice<real> initialisation_cercle(int taille)
     {
         for(int j=1; j<=taille; j++)
         {
-            f(i,j) = std::sqrt( (i-taille/2)*(i-taille/2)+(j-taille/2)*(j-taille/2) ) - (taille/3 - 8);
+            f(i,j) = std::sqrt( (i-taille/2)*(i-taille/2)+(j-taille/2)*(j-taille/2) ) - (taille/5);
 
         }
     }
     return f;
-}
-
-std::ostream& operator<<(std::ostream& stream, const matrice<double>& imag){
-    // fill the metadata header 
-    stream << "P2" << endl;
-    stream << imag.nb_colonnes() << " " << imag.nb_lignes() << endl;
-    stream << 1 << endl;
-    for  (int i=1; i<=imag.nb_lignes(); i++){
-        for (int j=1; j<=imag.nb_colonnes(); j++){
-            stream << imag(i,j) << " ";
-        }
-        stream << endl;
-    }
-    return stream;
-}
-
-
-
-std::istream& operator>>(std::istream& stream, matrice<real>& imag){
-    std::string type;
-    stream >> type;
-    if (type != "P5") {
-        cout << "file type must be P5. Read " << type << endl;
-        exit(-1);
-    }
-    int n, m;
-    stream >> m;
-    stream >> n;
-    int max_val;
-    stream >> max_val;
-    int num_pix=n*m;
-    std::vector<real> data(num_pix);
-    for (int i = 0; i < num_pix; i++)
-    {
-        stream >> data[i];
-    }
-
-    matrice<real> sortie(n,m,data);
-    imag=sortie;
-
-    return stream;
 }
 
 

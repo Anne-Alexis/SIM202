@@ -1,3 +1,6 @@
+#ifndef LEVELSET_HPP
+#define LEVELSET_HPP
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -9,16 +12,21 @@
 #pragma once
 
 using namespace std;
-/*
-matrice<real> image_en_matrice(const ImageGrayscale &f)
+
+class levelset: public matrice<real>
 {
-    matrice<real> res(f.h, f.w);
+    protected:
+    public:
+        levelset(int n, int m);
+        levelset(int n, int m, std::vector<real>);
+        levelset(matrice<real>);
 
-    //Mettre les valeurs des pixels dans res ata.
+};
 
-    return res;
-}
-*/
-// function to compute c1 and c2
+
+std::ostream& operator<<(std::ostream&, const levelset &);
+std::istream& operator>>(std::istream&, levelset &);
 
 vector<real> c1_and_c2(const matrice<real>& f, const matrice<real>& phi);
+
+#endif
