@@ -69,6 +69,78 @@ void Euler_Explicite(const matrice<real> &phi_n, matrice<real> &phi_np1, const m
     }
 }
 
+
+void Euler_Implicite(const matrice<real> & phi_n, matrice<real> &phi_np1, const matrice<real> &f, real cm, real cp)
+{
+    int n= phi_n.nb_lignes();
+    int m= phi_n.nb_colonnes();
+
+    //Calcul de phi_n1(1,1)
+    real Aim1j = mu/std::sqrt(eta*eta + ( phi_n(1,2)- phi_n(1,1) )*(phi_n(1,2)- phi_n(1,1) )*0.25 );
+    real Bijm1 = mu/std::sqrt(eta*eta + ( phi_n(2,1)- phi_n(1,1) )*(phi_n(2,1)- phi_n(1,1) )*0.25 );
+    real Bij   = mu/std::sqrt(eta*eta + ( phi_n(2,1)- phi_n(1,1) )*(phi_n(2,1)- phi_n(1,1) )*0.25 + (phi_n(1,1)-phi_n(2,1))*(phi_n(1,1)-phi_n(2,1)) );
+    real Aij   = mu/std::sqrt(eta*eta + ( phi_n(1,2)- phi_n(1,1) )*(phi_n(1,2)- phi_n(1,1) )*0.25 + (phi_n(1,1)-phi_n(1,2))*(phi_n(1,1)-phi_n(1,2)) );
+    real inter = 1+ dt*dirac(phi_n(1,1))*( Aij + Bij + Aim1j + Bijm1 );
+
+    phi_np1(1,1)  = dt*dirac(phi_n(1,1))*( Aij*phi_n(2,1) + Bij*phi_n(1,2) -nu - lambda1*(f(1,1)-cm)*(f(1,1)-cm) + lambda2*(f(1,1)-cp)*(f(1,1)-cp) );
+    phi_np1(1,1) /= inter;
+    phi_np1(1,1) += phi_n(1,1);
+    phi_np1(1,1) /=  1 - dt*dirac(phi_n(1,1))*(Aim1j + Bijm1)/inter ;
+
+    for(int j=2; j<=m; j++)
+    {
+        int jb;
+        j==n ? jb=0 : jb = 1;
+        real Aim1j = mu/std::sqrt(eta*eta + ( phi_n(1,j+jb)- phi_np1(1,j) )*(phi_n(1,j+jb)- phi_np1(1,j) )*0.25 );
+        real Bijm1 = mu/std::sqrt(eta*eta + ( phi_n(2,j-1)- phi_np1(1,j-1) )*(phi_n(2,j-1)- phi_np1(1,j-1) )*0.25 + ( phi_n(1,j-1)-phi_n(2,j-1) )*(phi_n(1,j-1)-phi_n(2,j-1)) );
+        real Bij   = mu/std::sqrt(eta*eta + ( phi_n(2,j)- phi_n(1,j) )*(phi_n(2,j)- phi_n(1,j) )*0.25 + (phi_n(1,j)-phi_n(2,j))*(phi_n(1,j)-phi_n(2,j)) );
+        real Aij   = mu/std::sqrt(eta*eta + ( phi_n(1,j+jb)- phi_n(1,j) )*(phi_n(1,j+jb)- phi_n(1,j) )*0.25 + (phi_n(1,j)-phi_n(1,j+jb))*(phi_n(1,j)-phi_n(1,j+jb)) );
+        real inter = 1+ dt*dirac(phi_n(1,1))*( Aij + Bij + Aim1j + Bijm1 ); 
+
+        phi_np1(1,j) = dt*dirac(phi_n(1,j))*( Aij*phi_n(2,j) + Bij*phi_n(1,j+jb) + Bijm1*phi_np1(1,j-1) -nu - lambda1*(f(1,j)-cm)*(f(1,1)-cm) + lambda2*(f(1,j)-cp)*(f(1,1)-cp));
+        phi_np1(1,j)/= inter; 
+        phi_np1(1,j)+= phi_n(1,j); 
+    }
+
+    for(int i=2; i<=n; i++)
+    {
+        int ir;
+        i==n ? ir=0 : ir = 1;
+        real Aim1j = mu/std::sqrt(eta*eta + ( phi_n(i-1,2)- phi_np1(i-1,1) )*(phi_n(i-1,2)- phi_np1(i-1,1) )*0.25 + ( phi_n(i,1)-phi_n(i-1,1) )*( phi_n(i,1)-phi_n(i-1,1) ) );
+        real Bijm1 = mu/std::sqrt(eta*eta + ( phi_n(2,j-1)- phi_np1(1,j-1) )*(phi_n(2,j-1)- phi_np1(1,j-1) )*0.25 + ( phi_n(1,j-1)-phi_n(2,j-1) )*(phi_n(1,j-1)-phi_n(2,j-1)) );
+        //
+        real Bij   = mu/std::sqrt(eta*eta + ( phi_n(2,j)- phi_n(1,j) )*(phi_n(2,j)- phi_n(1,j) )*0.25 + (phi_n(1,j)-phi_n(2,j))*(phi_n(1,j)-phi_n(2,j)) );
+        real Aij   = mu/std::sqrt(eta*eta + ( phi_n(1,j+jb)- phi_n(1,j) )*(phi_n(1,j+jb)- phi_n(1,j) )*0.25 + (phi_n(1,j)-phi_n(1,j+jb))*(phi_n(1,j)-phi_n(1,j+jb)) );
+        real inter = 1+ dt*dirac(phi_n(1,1))*( Aij + Bij + Aim1j + Bijm1 );
+        //
+    }
+
+
+
+    /*
+    for(int i=1; i<=n; i++)
+    {
+        for(int j=1; j<=m; j++)
+        {
+            int ir,ig,jh,jb;
+            i==n ? ir=0 : ir = 1;
+            i==1 ? ig=0 : ig = 1;
+            j==n ? jb=0 : jb = 1;
+            j==1 ? jh=0 : jh = 1;
+
+
+
+
+        }
+    }
+    */
+
+
+}
+
+
+
+
 matrice<real> resolution_globale(const matrice<real> &phi_0, const matrice<real> &f)
 {
     std::vector<real> c( c1_and_c2(f ,phi_0) );

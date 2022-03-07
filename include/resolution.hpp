@@ -11,7 +11,9 @@
 real heaviside(real x);
 real dirac(real x);
 
-void Euler_Explicite(const matrice<real> & phi_n, matrice<real> &phi_np1, real cm, real cp);
+void Euler_Explicite(const matrice<real> & phi_n, matrice<real> &phi_np1,const matrice<real> &f ,real cm, real cp);
+void Euler_Implicite(const matrice<real> & phi_n, matrice<real> &phi_np1,const matrice<real> &f , real cm, real cp);
+
 matrice<real> resolution_globale(const matrice<real> &phi_0, const matrice<real> &f);
 
 
